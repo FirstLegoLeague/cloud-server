@@ -1,0 +1,131 @@
+{{#>layout title="Events" js=true }}
+  <table>
+    <thead>
+    <tr>
+      <th>name</th>
+      <th>start time</th>
+      <th>end time</th>
+      <th>city</th>
+      <th>region</th>
+      <th>country</th>
+      <th>time-zone</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each events}}
+      <tr>
+        <td>{{name}}</td>
+        <td>
+          <span>
+            <span class="value">{{startTime}}</span>
+            <span class="status"></span>
+            <button class="edit-button">edit</button>
+          </span>
+          <input name="startTime"
+                 class="edit-input"
+                 type="datetime-local"
+                 value="{{startTime}}"
+                 data-old-value="{{startTime}}"
+                 data-id="{{_id}}"
+                 hidden>
+        </td>
+        <td>
+          <span>
+            <span class="value">{{endTime}}</span>
+            <span class="status"></span>
+            <button class="edit-button">edit</button>
+          </span>
+          <input name="startTime"
+                 class="edit-input"
+                 type="datetime-local"
+                 value="{{endTime}}"
+                 data-old-value="{{endTime}}"
+                 data-id="{{_id}}"
+                 hidden>
+        </td>
+        <td>
+          <span>
+            <span class="value">{{city}}</span>
+            <span class="status"></span>
+            <button class="edit-button">edit</button>
+          </span>
+          <input name="startTime"
+                 class="edit-input"
+                 type="datetime-local"
+                 value="{{city}}"
+                 data-old-value="{{city}}"
+                 data-id="{{_id}}"
+                 hidden>
+        </td>
+        <td>{{region}}</td>
+        <td>{{country}}</td>
+        <td>{{timezone}}</td>
+        <td><button class="delete-button" data-id="{{_id}}">delete</button></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  <a href="/admin/events/add">add event</a>
+  <script type="application/javascript">
+    ;(function () {
+      'use strict'
+
+      $('.delete-button').click(function (event) {
+        var $target = $(event.target)
+        var id = $target.attr('data-id')
+
+        axios.delete('/api/event/' + id, {
+          validateStatus: function (status) {
+            return (status >= 200 && status < 300) || status === 404
+          }
+        })
+            .then(function () {
+              $target.parents('tr').remove()
+            }, function (err) {
+              $('#message').html(err)
+            })
+      })
+
+      $('.edit-button').click(function (event) {
+        $(event.target).parent()
+            .hide()
+          .next()
+            .show()
+            .focus()
+      })
+
+      $('.edit-input').focusout(function (event) {
+        var $target = $(event.target)
+        var $cell = $target.prev()
+
+        if ($target.val() !== $target.attr('data-old-value')) {
+
+          var $editButton = $cell.children('.edit-button')
+          var $value = $cell.children('.value')
+          var $icon = $cell.children('.status')
+          var id = $target.attr('data-id')
+
+          $value.html($target.val())
+          $editButton.attr('disabled', true)
+          $icon.html('waiting...')
+
+          var body = {}
+
+          body[$target.attr('name')] = $target.val()
+
+          axios.patch('/api/event/' + id, body)
+            .then(function () {
+              $editButton.attr('disabled', false)
+              $icon.html('saved!')
+            }, function (err) {
+              $('#message').html(err)
+            })
+        }
+
+        $target.hide()
+        $cell.show()
+      })
+    })()
+  </script>
+{{/layout}}

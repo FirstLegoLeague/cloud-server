@@ -1,0 +1,43 @@
+{
+  "name": "@fll-tms-cloud/server",
+  "version": "1.0.0",
+  "description": "Server for the FIRST LEGO League TMS software",
+  "main": "index.js",
+  "repository": "https://github.com/FirstLegoLeague/cloud-server.git",
+  "author": "Roy Shmueli <2903801+2roy999@users.noreply.github.com>",
+  "license": "GPL-3.0",
+  "private": true,
+  "engines": {
+    "node": ">=10.x"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "bluebird": "^3.5.5",
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "hbs": "^4.0.4",
+    "lodash": "^4.17.15",
+    "mongodb": "^3.3.0-beta2",
+    "mustache": "^3.0.1",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-first-lego-league": "^1.0.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "nodemon": "^1.19.1"
+  }
+}

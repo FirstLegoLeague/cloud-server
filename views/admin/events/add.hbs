@@ -1,0 +1,39 @@
+{{#>layout title="Add event" js=true }}
+  <h2 id="message"></h2>
+  <form id="add-form">
+    <label>Name: </label>
+    <input id="name" type="text" value="{{ data.name }}">
+    <br>
+    <label>Start time:</label>
+    <input id="start-time" type="datetime-local" value="{{ data.startTime }}">
+    <br>
+    <label>End time:</label>
+    <input id="end-time" type="datetime-local" value="{{ data.endTime }}">
+    <br>
+    <label>City:</label>
+    <input id="city" type="text" value="{{ data.city }}">
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+  <script type="application/javascript">
+    ;(function () {
+      'use strict'
+
+      $('#add-form').submit(function (event) {
+        event.preventDefault()
+
+        axios.post('/api/event', {
+          name: $('#name').val(),
+          startTime: $('#start-time').val(),
+          endTime: $('#end-time').val(),
+          city: $('#city').val()
+        })
+          .then(function () {
+            window.location.href = '/admin/events'
+          }, function (err) {
+            $('#message').html(err)
+          })
+      })
+    })()
+  </script>
+{{/layout}}

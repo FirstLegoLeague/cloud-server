@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FIRST LEGO League TMS cloud - {{ title }}</title>
+  {{#if js}}
+    <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+  {{/if}}
+</head>
+<body>
+<h1>{{ title }}</h1>
+{{> @partial-block }}
+</body>
+</html>
