@@ -31,9 +31,7 @@ const config = {
     callbackBaseUrl: process.env.AUTH_CALLBACK_BASE_URL,
     superAdminEmail: process.env.SUPER_AMDIN_EMAIL
   },
-  session: {
-    secret: 'secret'
-  }
+  appSecret: process.env.APP_SECRET || 'secret'
 }
 
 const options = {

@@ -9,13 +9,14 @@
       <th>region</th>
       <th>country</th>
       <th>time-zone</th>
+      <th>Has key?</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     {{#each events}}
       <tr>
-        <td>{{name}}</td>
+        <td>{{displayName}}</td>
         <td>
           <span>
             <span class="value">{{startTime}}</span>
@@ -36,7 +37,7 @@
             <span class="status"></span>
             <button class="edit-button">edit</button>
           </span>
-          <input name="startTime"
+          <input name="endTime"
                  class="edit-input"
                  type="datetime-local"
                  value="{{endTime}}"
@@ -50,9 +51,9 @@
             <span class="status"></span>
             <button class="edit-button">edit</button>
           </span>
-          <input name="startTime"
+          <input name="city"
                  class="edit-input"
-                 type="datetime-local"
+                 type="text"
                  value="{{city}}"
                  data-old-value="{{city}}"
                  data-id="{{_id}}"
@@ -61,12 +62,22 @@
         <td>{{region}}</td>
         <td>{{country}}</td>
         <td>{{timezone}}</td>
+        <td>
+          {{#if key}}
+            <span>V</span>
+            <button class="create-key-button" data-id="{{_id}}" data-name="{{name}}" data-exists="true">recreate key</button>
+          {{else}}
+            <span>X</span>
+            <button class="create-key-button" data-id="{{_id}}" data-name="{{name}}">create key</button>
+          {{/if}}
+        </td>
         <td><button class="delete-button" data-id="{{_id}}">delete</button></td>
       </tr>
     {{/each}}
     </tbody>
   </table>
   <a href="/admin/events/add">add event</a>
+  <a id="downloader" style="display:none;"></a>
   <script type="application/javascript">
     ;(function () {
       'use strict'
@@ -125,6 +136,35 @@
 
         $target.hide()
         $cell.show()
+      })
+
+      $('.create-key-button').click(function (event) {
+        var $target = $(event.target)
+
+        if ($target.attr('data-exists')) {
+          if (!confirm('This operation will revoke any other key you created for this event')) {
+            $('#message').html('Key not created')
+          }
+        }
+
+        var id = $(event.target).attr('data-id')
+        var name = $(event.target).attr('data-name')
+
+        axios.post('/api/event/' + id + '/key', {})
+            .then(function (response) {
+              $target.prev().html('V')
+              $target.attr('data-exists', true)
+                  .html('recreate key')
+
+              var uri = encodeURI('data:application/json;charset=utf-8,' + JSON.stringify(response.data))
+
+              $('#downloader')
+                  .attr('href', uri)
+                  .attr('download', name + '.event-key.json')
+                  [0].click()
+            }, function (err) {
+              $('#message').html(err)
+            })
       })
     })()
   </script>
