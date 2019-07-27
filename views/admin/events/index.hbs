@@ -125,7 +125,7 @@
 
           body[$target.attr('name')] = $target.val()
 
-          axios.patch('/api/event/' + id, body)
+          axios.put('/api/event/' + id, body)
             .then(function () {
               $editButton.attr('disabled', false)
               $icon.html('saved!')
