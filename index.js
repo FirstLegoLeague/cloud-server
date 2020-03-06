@@ -16,7 +16,7 @@ const logger = winston.createLogger({
 })
 const port = process.env.PORT || 3000
 
-const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/fll-cloud'
+const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27018/fll-cloud'
 const mongoPromise = MongoClient.connect(mongoUri, {
   promiseLibrary: Promise,
   useNewUrlParser: true
